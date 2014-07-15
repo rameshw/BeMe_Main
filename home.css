@@ -1,0 +1,129 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 13, 2014, 11:55:43 PM
+    Author     : rameshweerakoon
+*/
+
+.tabs{
+    z-index: 1;
+    position:relative;
+    display: inline-block;
+    padding:0px;
+    margin-left:1px;
+    margin-top: 0%;
+    //margin-bottom: 5px;
+    //border-radius: 5px;
+    vertical-align: middle;
+    height:32px;
+    background-color: #00CC99 ;
+    text-align:center;
+    
+}
+
+body{
+    background-color: #E8E8E8 ;
+}
+.tabs:hover{
+    background-color: #C0C0C0  ;
+   
+}
+
+.links{
+    vertical-align: middle;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    color: white;
+    font-family: ProximaNovaRegular;
+    font-size:18px;
+    text-decoration: none;
+    //font-weight:bold;
+}
+
+#header{
+    z-index: 2;
+    position:fixed;
+    width:85%;
+    height: 32px;
+    margin-top: -8px;
+    //margin-right:20%;
+    margin-left:6%;
+}
+
+.right{
+    position:relative;
+    float:right;
+    height:800px;
+    width:61.5%;
+    background-color:white;
+    margin-top:30px;
+    margin-right:10%;
+    margin-bottom: 3px;
+}
+
+.left{
+    position:relative;
+    float:left;
+    height:800px;
+    width:22%;
+    /*#33CCFF*/
+    background-color:white;
+    //border-radius: 5px;
+    margin-top:30px;
+    margin-left:6%;
+    margin-bottom: 3px;
+}
+
+#footer{
+    position:relative;
+    height: 60px;
+    width:84%;
+    background-color: white;
+    clear:both;
+    margin-top:40px;
+    margin-left:6%;
+    text-align:center;
+}
+
+.myinfo{
+    margin-left: 18px;
+}
+
+.foot{
+    z-index: 1;
+    position:relative;
+    display: inline-block;
+    width:5%;
+}
+
+
+#addstory, #aboutme{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.allstories:hover,#addstory:hover,#aboutme:hover{
+    background-color: #E8E8E8 ;
+}
+
+.addstr{
+    width:80px;   
+    display: inline-block;
+    margin-bottom: 0px;
+    margin-top: 2px;
+    padding:0px;
+}
+
+form{
+    //width: 300px;
+     margin-left: 30px;
+}
+
+.allstories{
+    display: inline-block;
+}
