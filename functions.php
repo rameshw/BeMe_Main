@@ -25,7 +25,7 @@ function diplay_main_page(){
        
          echo "$name1 $name2!!!</br></br>Who would you like to be today?</br>
         <a href='home.php'>My Homepage</a></br>
-        <a href='bethem.php'>BeMore</a></br>
+        <a href='bemore.php'>BeMore</a></br>
         <a href='update.php'>Update Profile</a></br>
         <a href='?logout=true'>Logout</a>
         
@@ -42,7 +42,8 @@ function diplay_main_page(){
              <div class='foot'><a href ='about.php'>terms</a></div>
              <div class='foot'><a href ='about.php'>privacy</a></div></br>
              <div >a Ramesh Weerakoon production</div>
-             <div >BeMe.com © 2014</div>";
+             <div >BeMe.com © 2014</div>
+             </div>";
   }
   
   
@@ -53,56 +54,10 @@ function diplay_main_page(){
             <p class='addstr'>Link:</p><input name='link' type='text'/></br>
             <input type='submit' value='Add Story' name='submit'></form>  
             </div>";
-        }
+}
         
-  function diplay_home_page($user_id){
+   
         
-            global $host, $username, $password, $dbname;
-            //$user_id= $_COOKIE['id'];
-            $con = mysql_connect($host, $username, $password );
-            mysql_select_db($dbname, $con);
-
-            if (mysql_errno())
-            {
-                return "Error: Failed to connect to MySQL: " . mysql_error();
-            }
-            $result = mysql_query("select user_name_first, user_name_surname from user_info where user_id='$user_id';", $con);
-            $row = mysql_fetch_array($result);
-            $firstname= $row['user_name_first']; 
-            $secondname= $row['user_name_surname']; 
-            
-            $result = mysql_query("select user_count from user_more_info where user_id='$user_id';", $con);
-            $row = mysql_fetch_array($result);
-            $count= $row['user_count'];
-            mysql_close($con);
-            display_header($firstname, $secondname, $count);
-        }  
-        
- function display_header($firstname, $secondname, $count){
-            
-         echo "<head>
-        <title>BeMe.com- Home</title>
-            <meta http-equiv=content-type content='text/html; charset=utf-8'>
-            <meta http-equiv=imagetoolbar content=false>
-            <meta name=viewport content='initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
-            <meta name=format-detection content='telephone=no'>
-            <link rel=icon type=image/png href=logo.png>
-            <link rel=stylesheet href=home.css>
-            <script type='text/javascript' src=keymaster.min.js></script>
-            <script type='text/javascript' src='jquery.min.js'></script>
-        </head>
-        <body id='body'>";
-         echo "<div  id='header'>
-        <div id='main1' class='tabs' style='width:15%;'><a href ='about.php' id='main' class='links'>BeMe.com</a></div>
-        <div class='tabs' style='width:10%;'><a href ='?logout=true' class='links'>Logout</a></div>
-        <div class='tabs' style='width:10%;'><a href ='update.php' class='links'>My Page</a></div>
-        <div class='tabs' style='width:40%;'><a href ='view.php' class='links'>$firstname $secondname</a></div>
-        <div class='tabs' style='width:10%;'><a href ='bemore.php' class='links'>BeMe $count</a></div>
-        <div class='tabs' style='width:10%;'><a href ='bemore.php' class='links'>BeMore</a></div>
-        </div>";
-         
-}   
-
  function view_header($page_name,$css){
         echo "<head>
             <title>BeMe.com $page_name</title>
@@ -149,14 +104,14 @@ function add_acount(){
              $result = mysql_query("INSERT INTO user_info (user_name, user_name_first, user_name_surname, user_password) VALUES ('$user_name', '$user_name_first', '$user_name_last', '$user_pass');", $con);
              $row = mysql_fetch_array($result);
 
-             $result = mysql_query("select user_id from  user_info where user_name='$user_name' and user_name_first='$user_name_first' and user_name_second= '$user_name_last'and user_pass='$user_pass';", $con);
+             $result = mysql_query("select user_id from  user_info where user_name='$user_name' and user_name_first='$user_name_first' and user_name_surname= '$user_name_last'and user_password='$user_pass';", $con);
              $row = mysql_fetch_array($result);
-             $row = mysql_fetch_array($result);
+             
              $id=$row['user_id'];
-             $result = mysql_query("INSERT INTO user_more_info (user_id, user_count,  user_role, user_stories, user_exp, user_events, user_pers) VALUES ( $id, 0, '$role', '$stories', '$exp', '$events','$pers') where user_id=$id;", $con);
+             $result = mysql_query("INSERT INTO user_more_info (user_id, user_count, user_role, user_stories, user_exp, user_events, user_pers) VALUES ( $id, 0, '', '', '', '','');", $con);
              $row = mysql_fetch_array($result);
             
-             add_account_message('New Account Added');            
+             add_account_message("New Account Added!");            
 
          }else{
              add_account_message('Username Already Exist!!');    
@@ -169,9 +124,10 @@ function add_account_message($message){
                 First Name: <input name='first_name' type='text'></br> 
                 Last Name: <input name='last_name' type='text'></br>
                 Username: <input name='username' type='text'></br>
-                Password: <input name='password' type='password'></br></br>
-                <input type='submit' value='Login' name='submit'></form></br>
-                $message
+                Password: <input name='password' type='password'></br>
+                $message</br>
+                <input type='submit' value='Register' name='submit'></form></br>
+                
                 <a href='index.php'>Sign In</a></span></div></body>";
   
 }
@@ -226,6 +182,65 @@ function add_story(){
               mysql_close($con);
         }
 }
+function diplay_home_page($user_id){
+        
+            global $host, $username, $password, $dbname;
+            //$user_id= $_COOKIE['id'];
+            $con = mysql_connect($host, $username, $password );
+            mysql_select_db($dbname, $con);
+
+            if (mysql_errno())
+            {
+                return "Error: Failed to connect to MySQL: " . mysql_error();
+            }
+            $result = mysql_query("select user_name_first, user_name_surname from user_info where user_id='$user_id';", $con);
+            $row = mysql_fetch_array($result);
+            $firstname= $row['user_name_first']; 
+            $secondname= $row['user_name_surname']; 
+            
+            $result = mysql_query("select user_count from user_more_info where user_id='$user_id';", $con);
+            $row = mysql_fetch_array($result);
+            $count= $row['user_count'];
+            mysql_close($con);
+            display_header($firstname, $secondname, $count,$user_id);
+} 
+
+function display_header($firstname, $secondname, $count,$user_id){
+            
+         echo "<head>
+        <title>BeMe.com- Home</title>
+            <meta http-equiv=content-type content='text/html; charset=utf-8'>
+            <meta http-equiv=imagetoolbar content=false>
+            <meta name=viewport content='initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
+            <meta name=format-detection content='telephone=no'>
+            <link rel=icon type=image/png href=logo.png>
+            <link rel=stylesheet href=home.css>
+            <script type='text/javascript' src=keymaster.min.js></script>
+            <script type='text/javascript' src='jquery.min.js'></script>
+        </head>
+        <body id='body'>";
+         echo "<div  id='header'>
+        <div id='main1' class='tabs' style='width:15%;'><a href ='about.php' id='main' class='links'>BeMe.com</a></div>
+        <div class='tabs' style='width:10%;'><a href ='?logout=true' class='links'>Logout</a></div>";
+         
+        //if user is not me
+        if ($_COOKIE['id']!="$user_id"){
+            echo "<div class='tabs' style='width:10%;'><a href ='home.php' class='links'>My Page</a></div>
+        <div class='tabs' style='width:40%;'><a href ='view_user.php?id=$user_id' class='links'>$firstname $secondname</a></div>
+        <div class='tabs' style='width:10%;'><a href ='addCount.php' class='links'>Be$firstname $count</a></div>
+        <div class='tabs' style='width:10%;'><a href ='bemore.php' class='links'>BeMore</a></div>
+        </div>";
+            
+        }else{
+        ///////////// 
+        
+         echo "<div class='tabs' style='width:10%;'><a href ='update.php' class='links'>My Page</a></div>
+        <div class='tabs' style='width:40%;'><a href ='home.php' class='links'>$firstname $secondname</a></div>
+        <div class='tabs' style='width:10%;'><a href ='home.php' class='links'>BeMe $count</a></div>
+        <div class='tabs' style='width:10%;'><a href ='bemore.php' class='links'>BeMore</a></div>
+        </div>";
+        }
+} 
 
 function home_body($user_id){
             global $host, $username, $password, $dbname;
@@ -237,8 +252,9 @@ function home_body($user_id){
             {
                 return "Error: Failed to connect to MySQL: " . mysql_error();
             }
-            $result = mysql_query("select user_role, user_stories,user_exp,user_events,user_pers from user_more_info where user_id='$user_id';", $con);
+            $result = mysql_query("select a.user_name_first, b.user_role, b.user_stories,b.user_exp,b.user_events,b.user_pers from user_info a, user_more_info b where a.user_id=$user_id and a.user_id=b.user_id;", $con);
             $row = mysql_fetch_array($result);
+            $name=$row['user_name_first'];
             $role= $row['user_role']; 
             $stories= $row['user_stories']; 
             $exp= $row['user_exp']; 
@@ -253,7 +269,7 @@ function home_body($user_id){
         </div>
         <div class ='right'>
             </br>
-            <div id='aboutme' ><p class='myinfo'><b>About Me</b></br>
+            <div id='aboutme' ><p class='myinfo'><b>About $name</b></br>
             I am a: $role </br>
             Stories I Share: $stories </br>
             Typical Day: $exp </br>
@@ -270,7 +286,7 @@ function home_body($user_id){
         get_stories($user_id);
         echo "</div></div>";
         show_footer();
-        echo "</div></body>";
+        echo "</body>";
 }
 
  function get_stories($user_id){
@@ -299,8 +315,8 @@ function home_body($user_id){
                 $duration= $obj->data->duration;
                 $duration=number_format((float)$duration/60, 1, '.', '');
                 $views = $obj->data->viewCount;
-                echo "<div ><p class='allstories'>Story Title: $title</p></t><p class='allstories'>Duration: $duration mins</p></t><p class='allstories'>Views: $views</p></br>";
-               echo "<iframe title='$title' class='youtube-player' type='text/html' width='640' height='390' src='$link' frameborder='0' allowFullScreen></iframe>";
+                echo "<div class='eachstory'>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Story Title: $title</p>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Duration: $duration mins</p>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Views: $views</p></br></div>";
+               //echo "&nbsp;&nbsp;&nbsp;&nbsp;<iframe src='$link' frameborder='0' width='100%' height='100%'></iframe></div>";
              }           
             
              mysql_close($con);
@@ -338,6 +354,43 @@ function home_body($user_id){
         <input type='submit' value='Update' name='submit'></form></br>
         <a href='login.php'>Back</a></span></div></body>'";             
     }
+    
+    
+  function display_users(){
+           global $host, $username, $password, $dbname;
+            $id_user=$_COOKIE['id'];
+            $con = mysql_connect($host, $username, $password );
+            mysql_select_db($dbname, $con);
+
+            if (mysql_errno())
+            {
+                return "Error: Failed to connect to MySQL: " . mysql_error();
+            }
+            $result = mysql_query("select a.user_id, a.user_name_first, a.user_name_surname, b.user_count, b.user_stories from user_info a, user_more_info b where a.user_id=b.user_id and a.user_id!= $id_user;", $con);
+           echo "<div class ='left'>
+            </br>
+            <p id='events' class='myinfo'><b>My Events</b></p>
+            </div>
+            <div class ='right'>
+            </br></br>";
+            while($row = mysql_fetch_array($result)) {
+                $id=$row['user_id'] ;
+               $name1=$row['user_name_first'] ;
+               $name2=$row['user_name_surname'];
+               $count=$row['user_count'];
+               $stories=$row['user_stories'];
+
+               echo "<div class='users'><a href='view_user.php?id=$id'><b>$name1 $name2</b></a></br>
+                    Beme count: $count</br>
+                    Stories: $stories</br></div>";
+                    
+               }           
+             
+                echo "</div></div>";
+                show_footer();
+                echo "</body>";
+             mysql_close($con);
+}  
 /* 
  * 
  * To change this license header, choose License Headers in Project Properties.

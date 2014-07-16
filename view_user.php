@@ -5,13 +5,23 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
+
         <?php
+        include 'functions.php';   
+        
         // put your code here
+     if (!isset($_GET['logout'])){
+         if (!isset($_COOKIE['id'])){
+             header("Location:index.php");
+         }         
+    }else{
+        setcookie('id' , '' ,(time() - 3600));
+        header("Location:index.php");
+    }
+        $user_id= $_GET['id'];
+        diplay_home_page($user_id);
+        home_body($user_id);
+        //display_users();
+
         ?>
-    </body>
 </html>

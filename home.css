@@ -8,6 +8,7 @@ and open the template in the editor.
     Author     : rameshweerakoon
 */
 
+        
 .tabs{
     z-index: 1;
     position:relative;
@@ -32,7 +33,7 @@ body{
    
 }
 
-.links{
+#bemecount,.links{
     vertical-align: middle;
     padding-bottom: 0px;
     margin-bottom: 0px;
@@ -100,14 +101,14 @@ body{
 }
 
 
-#addstory, #aboutme{
+.eachstory,#addstory, #aboutme{
     padding-top: 5px;
     padding-bottom: 5px;
     margin-left: 3px;
     margin-right: 3px;
 }
 
-.allstories:hover,#addstory:hover,#aboutme:hover{
+.users:hover,.eachstory:hover,#addstory:hover,#aboutme:hover{
     background-color: #E8E8E8 ;
 }
 
@@ -119,11 +120,20 @@ body{
     padding:0px;
 }
 
+
 form{
     //width: 300px;
      margin-left: 30px;
+     margin-bottom: 5px;
 }
 
 .allstories{
     display: inline-block;
+}
+
+
+.users{
+   margin-left: 30px;
+   margin-bottom: 10px;
+   margin-right: 3px;   
 }

@@ -14,9 +14,7 @@ and open the template in the editor.
   include 'functions.php';
           // put your code here
      if (!isset($_GET['logout'])){
-         if (!isset($_COOKIE['id'])){
-             header("Location:index.php");
-         }  
+          
         //diplay_home_page();
     }else{
         setcookie('id' , '' ,(time() - 3600));
