@@ -19,6 +19,7 @@ and open the template in the editor.
         header("Location:index.php");
     }
         $user_id= $_GET['id'];
+        
         diplay_home_page($user_id);
         home_body($user_id);
         //display_users();
