@@ -67,6 +67,7 @@ function diplay_main_page(){
                 <meta name=format-detection content='telephone=no'>
                 <link rel=icon type=image/png href=logo.png>
                 <link rel=stylesheet href=$css>
+                <link rel='icon' href='/favicon.ico'>
                 <script type='text/javascript' src=keymaster.min.js></script>
                 <script type='text/javascript' src='jquery.min.js'></script>
             </head>
@@ -182,6 +183,7 @@ function add_story(){
               mysql_close($con);
         }
 }
+
 function diplay_home_page($user_id){
         
             global $host, $username, $password, $dbname;
@@ -213,7 +215,7 @@ function display_header($firstname, $secondname, $count,$user_id){
             <meta http-equiv=imagetoolbar content=false>
             <meta name=viewport content='initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
             <meta name=format-detection content='telephone=no'>
-            <link rel=icon type=image/png href=logo.png>
+            <link rel='icon' href='/favicon.ico'>
             <link rel=stylesheet href=home.css>
             <script type='text/javascript' src=keymaster.min.js></script>
             <script type='text/javascript' src='jquery.min.js'></script>
@@ -233,7 +235,6 @@ function display_header($firstname, $secondname, $count,$user_id){
             
         }else{
         ///////////// 
-        
          echo "<div class='tabs' style='width:10%;'><a href ='update.php' class='links'>My Page</a></div>
         <div class='tabs' style='width:40%;'><a href ='home.php' class='links'>$firstname $secondname</a></div>
         <div class='tabs' style='width:10%;'><a href ='home.php' class='links'>BeMe $count</a></div>
@@ -260,14 +261,13 @@ function home_body($user_id){
             $exp= $row['user_exp']; 
             $events= $row['user_events']; 
             $pers= $row['user_pers']; 
+            mysql_close($con);         
             
-            mysql_close($con);
-                        
-        echo "<div class ='left'>
+        echo "<div class ='left' >
             </br>
             <p id='events' class='myinfo'><b>My Events</b></p>
         </div>
-        <div class ='right'>
+        <div class ='right' >
             </br>
             <div id='aboutme' ><p class='myinfo'><b>About $name</b></br>
             I am a: $role </br>
@@ -276,13 +276,39 @@ function home_body($user_id){
             My Events: $events </br>
             My Perspectives: $pers </br>
             </p></div>";
-        if ($_COOKIE['id']==$user_id){
+        
+        if ($_COOKIE['id']==$user_id)
+        {
             show_add_story();
         }
+        
         if(isset($_POST['submit']))
         {
             add_story();
         }
+        $con = mysql_connect($host, $username, $password );
+            mysql_select_db($dbname, $con);
+
+            if (mysql_errno())
+            {
+                return "Error: Failed to connect to MySQL: " . mysql_error();
+            }
+        $result = mysql_query("select count(user_id) as counts from user_stories where user_id=$user_id;", $con); 
+        $row = mysql_fetch_array($result);
+        $count=$row['counts'];
+        mysql_close($con);     
+        $height=300 + ($count*450);   
+           echo"<style>
+            .right{
+                height:$height" . "px;
+            }
+            
+            .left{
+                height:$height". "px;
+            }
+            </style>";
+           
+        
         get_stories($user_id);
         echo "</div></div>";
         show_footer();
@@ -315,7 +341,10 @@ function home_body($user_id){
                 $duration= $obj->data->duration;
                 $duration=number_format((float)$duration/60, 1, '.', '');
                 $views = $obj->data->viewCount;
-                echo "<div class='eachstory'>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Story Title: $title</p>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Duration: $duration mins</p>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Views: $views</p></br></div>";
+                echo "<div class='eachstory'>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Story Title: $title</p>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Duration: $duration mins</p>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Views: $views</p></br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<iframe width='600' height='345' src='http://www.youtube.com/embed/$video_id'> </iframe></br>
+                        
+                        </div>";
                //echo "&nbsp;&nbsp;&nbsp;&nbsp;<iframe src='$link' frameborder='0' width='100%' height='100%'></iframe></div>";
              }           
             
