@@ -82,6 +82,7 @@ function add_acount(){
         global $host, $username, $password, $dbname;
         $user_name_first=$_POST['first_name'];
         $user_name_last=$_POST['last_name'];
+        $user_stream=$_POST['my_stream'];
         $user_name=$_POST['username'];
         $user_pass=$_POST['password'];
         if ($user_name_first=="" or $user_name_last=="" or $user_name=="" or $user_pass==""){       
@@ -102,7 +103,7 @@ function add_acount(){
          $row = mysql_fetch_array($result);
          if ($row==null){
          
-             $result = mysql_query("INSERT INTO user_info (user_name, user_name_first, user_name_surname, user_password) VALUES ('$user_name', '$user_name_first', '$user_name_last', '$user_pass');", $con);
+             $result = mysql_query("INSERT INTO user_info (user_name, user_name_first, user_name_surname, user_password, user_stream) VALUES ('$user_name', '$user_name_first', '$user_name_last', '$user_pass', '$user_stream');", $con);
              $row = mysql_fetch_array($result);
 
              $result = mysql_query("select user_id from  user_info where user_name='$user_name' and user_name_first='$user_name_first' and user_name_surname= '$user_name_last'and user_password='$user_pass';", $con);
@@ -124,6 +125,7 @@ function add_account_message($message){
    echo "</br><form action='add.php' method='post'>
                 First Name: <input name='first_name' type='text'></br> 
                 Last Name: <input name='last_name' type='text'></br>
+                My Stream Link: <input name='my_stream' type='text'></br>
                 Username: <input name='username' type='text'></br>
                 Password: <input name='password' type='password'></br>
                 $message</br>
@@ -276,12 +278,7 @@ function home_body($user_id){
             My Events: $events </br>
             My Perspectives: $pers </br>
             </p></div>";
-        
-        if ($_COOKIE['id']==$user_id)
-        {
-            show_add_story();
-        }
-        
+             
         if(isset($_POST['submit']))
         {
             add_story();
@@ -297,7 +294,7 @@ function home_body($user_id){
         $row = mysql_fetch_array($result);
         $count=$row['counts'];
         mysql_close($con);     
-        $height=300 + ($count*450);   
+        $height=600 + ($count*440);   
            echo"<style>
             .right{
                 height:$height" . "px;
@@ -326,6 +323,33 @@ function home_body($user_id){
             {
                 return "Error: Failed to connect to MySQL: " . mysql_error();
             }
+            $result=mysql_query("select user_stream from user_info where user_id=$user_id;", $con);
+            $row=mysql_fetch_array($result);
+            $user_stream=$row['user_stream'];
+            parse_str(parse_url($user_stream,PHP_URL_QUERY),$arr);
+            $video_id=$arr['v'];
+            $data=@file_get_contents('http://gdata.youtube.com/feeds/api/videos/'.$video_id.'?v=2&alt=jsonc');
+                if (false===$data) "return false";
+
+                $obj=json_decode($data);
+                $duration= $obj->data->duration;
+                $duration=number_format((float)$duration/60, 1, '.', '');
+                $views = $obj->data->viewCount;
+                
+             
+            echo "<div class='eachstory'>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Story Title: My Stream</p>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Duration: $duration mins</p>&nbsp;&nbsp;&nbsp;&nbsp;<p class='allstories'>Views: $views</p></br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<iframe width='750' height='345' src='http://www.youtube.com/embed/$video_id''> </iframe></br>
+                        
+                        </div>";
+            
+            
+            if ($_COOKIE['id']==$user_id)
+            {
+                show_add_story();
+            }
+            
+            
+            
             $result = mysql_query("select story_title, story_link from user_stories where user_id=$user_id;", $con);
            
             while($row = mysql_fetch_array($result)) {
