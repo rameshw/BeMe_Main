@@ -4,6 +4,7 @@ static $username = "root";
 static $password = "";
 static $dbname = "beme";
 
+
 function diplay_main_page(){
         global $host, $username, $password, $dbname;
         
